@@ -1,1 +1,3 @@
 node_modules
+dist/assets/bundle.css
+dist/assets/bundle.js
