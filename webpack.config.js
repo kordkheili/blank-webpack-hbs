@@ -1,25 +1,19 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
-  watch: true,
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: "bundle.css",
-    }),
-  ],
+  mode: "development",
   entry: "./src/index.js",
   output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "dist/assets"),
+    filename: "assets/bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    clean: true,
   },
   devServer: {
-    static: {
-      directory: path.join(__dirname, "dist"),
-    },
+    static: path.resolve(__dirname, "dist"),
     port: 9000,
     hot: true,
   },
-  mode: "development",
   module: {
     rules: [
       {
@@ -28,22 +22,33 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [
-          // Creates `style` nodes from JS strings
-          MiniCssExtractPlugin.loader,
-          // Translates CSS into CommonJS
-          "css-loader",
-          // Compiles Sass to CSS
-          "sass-loader",
-        ],
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
-        test: /\.(woff|woff2|ttf|svg|eot)$/i,
+        test: /\.(png|jpg|jpeg|gif|svg)$/i,
+        generator: {
+          filename: "assets/images/[name][ext]",
+        },
+      },
+      {
+        test: /\.(woff|woff2|ttf|eot)$/i,
         type: "asset/resource",
         generator: {
-          filename: "fonts/[name][ext][query]",
+          filename: "assets/fonts/[name][ext]",
         },
+      },
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
       },
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "assets/bundle.css",
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/index.html",
+    }),
+  ],
 };
