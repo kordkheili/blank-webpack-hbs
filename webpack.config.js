@@ -13,6 +13,7 @@ module.exports = {
     static: path.resolve(__dirname, "dist"),
     port: 9000,
     hot: true,
+    open: true,
   },
   module: {
     rules: [
