@@ -27,6 +27,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/i,
+        type: "asset/resource",
         generator: {
           filename: "assets/images/[name][ext]",
         },
@@ -42,6 +43,13 @@ module.exports = {
         test: /\.html$/i,
         loader: "html-loader",
       },
+      {
+        test: /\.hbs$/i,
+        loader: "handlebars-loader",
+        options: {
+          inlineRequires: "assets",
+        },
+      },
     ],
   },
   plugins: [
@@ -49,7 +57,7 @@ module.exports = {
       filename: "assets/bundle.css",
     }),
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: "./src/index.hbs",
     }),
   ],
 };
